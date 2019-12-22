@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>WaterPi - Debug</title>
+  <link rel="stylesheet" href="/static/css/bulma.min.css">
+
+  <script type="text/javascript">
+
+  function enable(pump_no) {
+    console.log('enable pump ' + pump_no)
+    fetch('/enable/' + pump_no)
+      .then(function(response) {
+        console.log(response);
+    });
+  };
+
+  function disable(pump_no) {
+    console.log('disable pump ' + pump_no)
+    fetch('/disable/' + pump_no)
+      .then(function(response) {
+        console.log(response);
+    });
+  };
+  </script>
+</head>
+
+<body>
+
+{% for pump in pumps %}
+<div class="control">
+  <button class="button is-primary" onclick="enable({{ loop.index-1 }})">Pump {{ loop.index-1 }} Enable</button>
+</div>
+<div class="control">
+  <button class="button is-primary" onclick="disable({{ loop.index-1 }})">Pump {{ loop.index-1 }} Disable</button>
+</div>
+<br />
+{% endfor %}
+</body>
+
+</html>

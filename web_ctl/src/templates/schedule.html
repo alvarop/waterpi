@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>WaterPi - Schedule</title>
+  <!-- <link rel="stylesheet" href="css/bulma.min.css"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script type="text/javascript">
+
+  function enable(pump_no) {
+    console.log('enable pump ' + pump_no)
+    fetch('/enable/' + pump_no)
+      .then(function(response) {
+        console.log(response);
+    });
+  };
+
+  function disable(pump_no) {
+    console.log('disable pump ' + pump_no)
+    fetch('/disable/' + pump_no)
+      .then(function(response) {
+        console.log(response);
+    });
+  };
+  </script>
+</head>
+
+<body>
+<section class="section">
+  <div class="container is-fluid">
+    <div class="notification">
+      Watering Schedule!
+    </div>
+  </div>
+
+  <div class="container is-fluid">
+    <!-- <div class="notification"> -->
+      <table class="table is-bordered is-striped is-fullwidth">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Start Time</th>
+            <th>Stop Time</th>
+            <th>Pump</th>
+            <th>Options</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in config["schedule"] %}
+        <form method="POST" action="http://127.0.0.1:8000/delete" onsubmit="return confirm('Are you sure you want to delete {{ item["name"] }}?')">
+          <tr>
+            <td>{{ item["name"] }}</td>
+            <td>{{ item["start_time"] }}</td>
+            <td>{{ item["stop_time"] }}</td>
+            <td>Pump {{ item["pump_no"] }}</td>
+            <td>
+
+<!--               <button class="button is-warning">Edit</button>
+ -->              <button class="button is-danger" name="uuid" value="{{ item["uuid"] }}">Delete</button>
+            </td>
+          </tr>
+        </form>
+          {% endfor %}
+
+          <form method="POST" action="http://127.0.0.1:8000/add">
+          <tr>
+            <td>
+              <input class="input" type="text" name="name" placeholder="Name" required>
+            </td>
+            <td>
+              <input type="date" id="start_date" name="start_date" required>
+              <input type="time" id="start_time" name="start_time" required></td>
+            <td>
+              <input type="date" id="stop_date" name="stop_date" required>
+              <input type="time" id="stop_time" name="stop_time" required></td>
+            </td>
+            <td>
+              <select id="pump_no" name="pump_no">
+              {% for pump in config["pumps"] %}
+                <option value="{{ loop.index - 1 }}">Pump {{ loop.index - 1 }}</option>
+              {% endfor %}
+              </select>
+            </td>
+            <td><button class="button is-primary">Add</button></td>
+          </tr>
+          </form>
+        </tbody>
+      </table>
+    <!-- </div> -->
+  </div>
+
+</section>
+</body>
+
+</html>
