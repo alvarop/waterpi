@@ -15,14 +15,17 @@ config = None
 
 parser = argparse.ArgumentParser()
 
+parser.add_argument("config", help="Config file location")
+
 parser.add_argument(
-    "config",  help="Config file location"
+    "--sleep", type=float, default=1.0, help="Scheduling sleep/resolution"
 )
 
 args = parser.parse_args()
 
 if not os.path.exists(args.config):
     raise Exception("Config file not found.")
+
 
 def load_config():
     global config
@@ -31,6 +34,7 @@ def load_config():
 
     if config is None:
         raise Exception("Unable to load config file")
+
 
 load_config()
 
@@ -44,6 +48,10 @@ while True:
 
     for item in config["schedule"]:
         if item["start_time"] < datetime.now() < item["stop_time"]:
-            print(datetime.now(), "Running Pump {}".format(item["pump_no"]), config["pumps"][item["pump_no"]])
+            print(
+                datetime.now(),
+                "Running Pump {}".format(item["pump_no"]),
+                config["pumps"][item["pump_no"]],
+            )
 
-    time.sleep(1)
+    time.sleep(args.sleep)

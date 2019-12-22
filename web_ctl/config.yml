@@ -3,14 +3,4 @@ pumps:
 - 27
 - 17
 - 23
-schedule:
-- name: Testing
-  pump_no: 2
-  start_time: 2019-12-23 10:47:00
-  stop_time: 2019-12-23 12:49:00
-  uuid: a08cfa6b-4608-4e1b-97d9-39d29c5f263d
-- name: Testing again
-  pump_no: 0
-  start_time: 2020-01-23 00:50:00
-  stop_time: 2020-01-23 12:50:00
-  uuid: e10034ac-ff4d-450f-97fb-6a9d032d680c
+schedule: []
