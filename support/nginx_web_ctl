@@ -1,0 +1,18 @@
+# nginx config for flask app
+# Copy to: /etc/nginx/sites-enabled/web_ctl
+server {
+        server_name web_ctl;
+        listen 80;
+        root /home/pi/waterpi/web_ctl/static;
+
+        location / {
+                try_files $uri @web_ctl-flask;
+        }
+
+        location @web_ctl-flask {
+                include proxy_params;
+                proxy_pass http://unix:/home/pi/waterpi/web_ctl/web_ctl.sock;
+        }
+}
+
+
